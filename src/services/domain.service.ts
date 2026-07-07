@@ -2,7 +2,10 @@ import {
   GET_DOMAIN_BY_URN_QUERY,
   SEARCH_DOMAINS_QUERY,
 } from '@/graphql/queries/domain.query';
-import type { DataHubEntity, DataHubSearchResult } from '@/graphql/types/datahub.types';
+import type {
+  DomainSearchEntity,
+  DomainSearchResult,
+} from '@/graphql/types/domain.types';
 import type { MetadataProvider } from '@/interfaces/metadata-provider';
 import { datahubClient } from '@/providers/datahub';
 import type { PaginationParams } from '@/types/api';
@@ -14,11 +17,12 @@ export class DomainService {
   async search(query?: string, pagination: PaginationParams = {}) {
     const input = buildSearchInput({
       entityType: 'DOMAIN',
-      query,
-      ...pagination,
+      query: query ?? '*',
+      start: pagination.start ?? 0,
+      count: pagination.count ?? 100,
     });
 
-    const result = await this.provider.execute<DataHubSearchResult<DataHubEntity>>({
+    const result = await this.provider.execute<DomainSearchResult>({
       query: SEARCH_DOMAINS_QUERY,
       variables: { input },
     });
@@ -27,7 +31,9 @@ export class DomainService {
   }
 
   async getByUrn(urn: string) {
-    const result = await this.provider.execute<{ domain: DataHubEntity | null }>({
+    const result = await this.provider.execute<{
+      domain: DomainSearchEntity | null;
+    }>({
       query: GET_DOMAIN_BY_URN_QUERY,
       variables: { urn },
     });
