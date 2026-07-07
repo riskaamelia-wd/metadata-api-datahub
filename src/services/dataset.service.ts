@@ -2,7 +2,10 @@ import {
   GET_DATASET_BY_URN_QUERY,
   SEARCH_DATASETS_QUERY,
 } from '@/graphql/queries/dataset.query';
-import type { DataHubEntity, DataHubSearchResult } from '@/graphql/types/datahub.types';
+import type {
+  DatasetSearchEntity,
+  DatasetSearchResult,
+} from '@/graphql/types/dataset.types';
 import type { MetadataProvider } from '@/interfaces/metadata-provider';
 import { datahubClient } from '@/providers/datahub';
 import type { PaginationParams } from '@/types/api';
@@ -14,11 +17,12 @@ export class DatasetService {
   async search(query?: string, pagination: PaginationParams = {}) {
     const input = buildSearchInput({
       entityType: 'DATASET',
-      query,
-      ...pagination,
+      query: query ?? '*',
+      start: pagination.start ?? 0,
+      count: pagination.count ?? 100,
     });
 
-    const result = await this.provider.execute<DataHubSearchResult<DataHubEntity>>({
+    const result = await this.provider.execute<DatasetSearchResult>({
       query: SEARCH_DATASETS_QUERY,
       variables: { input },
     });
@@ -27,7 +31,9 @@ export class DatasetService {
   }
 
   async getByUrn(urn: string) {
-    const result = await this.provider.execute<{ dataset: DataHubEntity | null }>({
+    const result = await this.provider.execute<{
+      dataset: DatasetSearchEntity | null;
+    }>({
       query: GET_DATASET_BY_URN_QUERY,
       variables: { urn },
     });
