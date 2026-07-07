@@ -23,6 +23,16 @@ export const env = {
     gmsUrl: getEnv('DATAHUB_GMS_URL', 'http://localhost:8080/api/graphql'),
     accessToken: process.env.DATAHUB_ACCESS_TOKEN ?? '',
   },
+  postgrest: {
+    url: getEnv('POSTGREST_URL', 'http://localhost:3001'),
+    accessToken: process.env.POSTGREST_ACCESS_TOKEN ?? '',
+  },
+  postgres: {
+    url: getEnv(
+      'DATABASE_URL',
+      'postgresql://postgres:postgres@localhost:5433/kpu_opendata',
+    ),
+  },
 } as const;
 
 export { validateEnv };
