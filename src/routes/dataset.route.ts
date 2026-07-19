@@ -7,6 +7,9 @@ export const datasetRoutes = {
     if (urn) {
       return datasetController.getDataset(request);
     }
+    if (request.nextUrl.searchParams.has('domainUrn')) {
+      return datasetController.listDatasetsByDomain(request);
+    }
     return datasetController.listDatasets(request);
   }),
 };

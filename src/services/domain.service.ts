@@ -9,25 +9,22 @@ import type {
 import type { MetadataProvider } from '@/interfaces/metadata-provider';
 import { datahubClient } from '@/providers/datahub';
 import type { PaginationParams } from '@/types/api';
-import { buildSearchInput } from '@/utils/search-input';
 
 export class DomainService {
   constructor(private readonly provider: MetadataProvider = datahubClient) {}
 
-  async search(query?: string, pagination: PaginationParams = {}) {
-    const input = buildSearchInput({
-      entityType: 'DOMAIN',
-      query: query ?? '*',
+  async search(pagination: PaginationParams = {}) {
+    const input = {
       start: pagination.start ?? 0,
-      count: pagination.count ?? 100,
-    });
+      count: pagination.count ?? 20,
+    };
 
     const result = await this.provider.execute<DomainSearchResult>({
       query: SEARCH_DOMAINS_QUERY,
       variables: { input },
     });
 
-    return result.search;
+    return result.listDomains;
   }
 
   async getByUrn(urn: string) {

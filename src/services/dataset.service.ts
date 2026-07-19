@@ -1,8 +1,10 @@
 import {
+  DATASETS_BY_DOMAIN_QUERY,
   GET_DATASET_BY_URN_QUERY,
   SEARCH_DATASETS_QUERY,
 } from '@/graphql/queries/dataset.query';
 import type {
+  DatasetByDomainResult,
   DatasetSearchEntity,
   DatasetSearchResult,
 } from '@/graphql/types/dataset.types';
@@ -24,6 +26,35 @@ export class DatasetService {
 
     const result = await this.provider.execute<DatasetSearchResult>({
       query: SEARCH_DATASETS_QUERY,
+      variables: { input },
+    });
+
+    return result.search;
+  }
+
+  async searchByDomain(
+    domainUrn: string,
+    pagination: PaginationParams = {},
+  ) {
+    if (!domainUrn.startsWith('urn:li:domain:')) {
+      throw new Error('Invalid domain URN');
+    }
+
+    const input = {
+      type: 'DATASET',
+      query: '*',
+      start: pagination.start ?? 0,
+      count: pagination.count ?? 20,
+      filters: [
+        {
+          field: 'domains',
+          values: [domainUrn],
+        },
+      ],
+    };
+
+    const result = await this.provider.execute<DatasetByDomainResult>({
+      query: DATASETS_BY_DOMAIN_QUERY,
       variables: { input },
     });
 

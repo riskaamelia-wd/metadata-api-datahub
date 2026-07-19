@@ -24,3 +24,11 @@ export function parseUrn(request: NextRequest): string {
   }
   return urn;
 }
+
+export function parseDomainUrn(request: NextRequest): string {
+  const domainUrn = request.nextUrl.searchParams.get('domainUrn');
+  if (!domainUrn) {
+    throw new Error('Query parameter "domainUrn" is required');
+  }
+  return domainUrn;
+}

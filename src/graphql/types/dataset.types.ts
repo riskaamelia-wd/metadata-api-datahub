@@ -10,3 +10,20 @@ export interface DatasetSearchResult {
     }>;
   };
 }
+
+export interface DatasetByDomainEntity {
+  urn: string;
+  name: string;
+  properties: {
+    description: string | null;
+  } | null;
+}
+
+export interface DatasetByDomainResult {
+  search: {
+    total: number;
+    searchResults: Array<{
+      entity: DatasetByDomainEntity;
+    }>;
+  };
+}

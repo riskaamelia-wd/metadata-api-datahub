@@ -1,10 +1,15 @@
 export const SEARCH_DOMAINS_QUERY = `
-  query SearchDomains($input: SearchInput!) {
-    search(input: $input) {
+  query SearchDomains($input: ListDomainsInput!) {
+    listDomains(input: $input) {
       total
-      searchResults {
-        entity {
-          urn
+      domains {
+        urn
+        properties {
+          name
+          description
+        }
+        entities {
+          total
         }
       }
     }

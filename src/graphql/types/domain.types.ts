@@ -1,12 +1,17 @@
 export interface DomainSearchEntity {
   urn: string;
+  properties: {
+    name: string;
+    description: string | null;
+  } | null;
+  entities: {
+    total: number;
+  };
 }
 
 export interface DomainSearchResult {
-  search: {
+  listDomains: {
     total: number;
-    searchResults: Array<{
-      entity: DomainSearchEntity;
-    }>;
+    domains: DomainSearchEntity[];
   };
 }

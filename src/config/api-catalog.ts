@@ -1,8 +1,8 @@
-import { ALLOWED_DATA_SCHEMAS } from '@/config/schemas';
+import { ALLOWED_DATA_SCHEMAS } from "@/config/schemas";
 
 export interface ApiEndpoint {
   id: string;
-  method: 'GET';
+  method: "GET";
   path: string;
   description: string;
   category: string;
@@ -11,104 +11,112 @@ export interface ApiEndpoint {
 
 const metadataEndpoints: ApiEndpoint[] = [
   {
-    id: 'health',
-    method: 'GET',
-    path: '/api/health',
-    description: 'Cek status kesehatan layanan API',
-    category: 'Sistem',
+    id: "health",
+    method: "GET",
+    path: "/api/health",
+    description: "Cek status kesehatan layanan API",
+    category: "Sistem",
   },
   {
-    id: 'domains-list',
-    method: 'GET',
-    path: '/api/domains',
-    description: 'Daftar semua domain metadata',
-    category: 'Metadata',
+    id: "domains-list",
+    method: "GET",
+    path: "/api/domains",
+    description: "Daftar semua domain metadata",
+    category: "Metadata",
   },
   {
-    id: 'domains-detail',
-    method: 'GET',
-    path: '/api/domains?urn={urn}',
-    description: 'Detail domain berdasarkan URN',
-    category: 'Metadata',
-    note: 'Ganti {urn} dengan URN yang valid',
+    id: "domains-detail",
+    method: "GET",
+    path: "/api/domains?urn={urn}",
+    description: "Detail domain berdasarkan URN",
+    category: "Metadata",
+    note: "Ganti {urn} dengan URN yang valid",
   },
   {
-    id: 'datasets-list',
-    method: 'GET',
-    path: '/api/datasets',
-    description: 'Daftar semua dataset',
-    category: 'Metadata',
+    id: "datasets-list",
+    method: "GET",
+    path: "/api/datasets",
+    description: "Daftar semua dataset",
+    category: "Metadata",
   },
   {
-    id: 'datasets-detail',
-    method: 'GET',
-    path: '/api/datasets?urn={urn}',
-    description: 'Detail dataset berdasarkan URN',
-    category: 'Metadata',
-    note: 'Ganti {urn} dengan URN yang valid',
+    id: "datasets-by-domain",
+    method: "GET",
+    path: "/api/datasets?domainUrn={urn}",
+    description: "Daftar dataset berdasarkan domain",
+    category: "Metadata",
+    note: "Ganti {urn} dengan URN domain yang valid",
   },
   {
-    id: 'glossary-list',
-    method: 'GET',
-    path: '/api/glossary',
-    description: 'Daftar istilah glossary',
-    category: 'Metadata',
+    id: "datasets-detail",
+    method: "GET",
+    path: "/api/datasets?urn={urn}",
+    description: "Detail dataset berdasarkan URN",
+    category: "Metadata",
+    note: "Ganti {urn} dengan URN yang valid. contoh http://localhost:3000/api/datasets?urn=urn:li:dataset:(urn:li:dataPlatform:postgres,open_data_db.kependudukan.penduduk_per_kecamatan,PROD)",
   },
   {
-    id: 'glossary-detail',
-    method: 'GET',
-    path: '/api/glossary?urn={urn}',
-    description: 'Detail istilah glossary berdasarkan URN',
-    category: 'Metadata',
-    note: 'Ganti {urn} dengan URN yang valid',
+    id: "glossary-list",
+    method: "GET",
+    path: "/api/glossary",
+    description: "Daftar istilah glossary",
+    category: "Metadata",
   },
   {
-    id: 'owners-list',
-    method: 'GET',
-    path: '/api/owners',
-    description: 'Daftar pemilik (owners) data',
-    category: 'Metadata',
+    id: "glossary-detail",
+    method: "GET",
+    path: "/api/glossary?urn={urn}",
+    description: "Detail istilah glossary berdasarkan URN",
+    category: "Metadata",
+    note: "Ganti {urn} dengan URN yang valid",
   },
   {
-    id: 'owners-detail',
-    method: 'GET',
-    path: '/api/owners?urn={urn}',
-    description: 'Detail owner berdasarkan URN',
-    category: 'Metadata',
-    note: 'Ganti {urn} dengan URN yang valid',
+    id: "owners-list",
+    method: "GET",
+    path: "/api/owners",
+    description: "Daftar pemilik (owners) data",
+    category: "Metadata",
   },
   {
-    id: 'lineage',
-    method: 'GET',
-    path: '/api/lineage?urn={urn}',
-    description: 'Lineage data berdasarkan URN',
-    category: 'Metadata',
-    note: 'Parameter urn wajib diisi',
+    id: "owners-detail",
+    method: "GET",
+    path: "/api/owners?urn={urn}",
+    description: "Detail owner berdasarkan URN",
+    category: "Metadata",
+    note: "Ganti {urn} dengan URN yang valid",
+  },
+  {
+    id: "lineage",
+    method: "GET",
+    path: "/api/lineage?urn={urn}",
+    description: "Lineage data berdasarkan URN",
+    category: "Metadata",
+    note: "Parameter urn wajib diisi",
   },
 ];
 
 const dataEndpoints: ApiEndpoint[] = [
   {
-    id: 'tables-all',
-    method: 'GET',
-    path: '/api/tables',
-    description: 'Daftar semua tabel yang tersedia',
-    category: 'Data',
+    id: "tables-all",
+    method: "GET",
+    path: "/api/tables",
+    description: "Daftar semua tabel yang tersedia",
+    category: "Data",
   },
   ...ALLOWED_DATA_SCHEMAS.map((schema) => ({
     id: `tables-${schema}`,
-    method: 'GET' as const,
+    method: "GET" as const,
     path: `/api/tables?schema=${schema}`,
     description: `Daftar tabel pada schema ${schema}`,
-    category: 'Data',
+    category: "Data",
   })),
   ...ALLOWED_DATA_SCHEMAS.map((schema) => ({
     id: `data-${schema}`,
-    method: 'GET' as const,
+    method: "GET" as const,
     path: `/api/${schema}/{table}`,
     description: `Data dari tabel pada schema ${schema}`,
-    category: 'Data',
-    note: 'Ganti {table} dengan nama tabel yang valid',
+    category: "Data",
+    note: "Ganti {table} dengan nama tabel yang valid",
   })),
 ];
 
@@ -130,5 +138,5 @@ export function groupByCategory(
 
 /** * Returns true when the path can be fetched directly without placeholder substitution. */
 export function isDirectlyCallable(path: string): boolean {
-  return !path.includes('{');
+  return !path.includes("{");
 }
